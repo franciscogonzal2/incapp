@@ -4,13 +4,14 @@ import Modal from "../components/Modal";
 import TableInfo from "../components/TableInfo";
 import UserActioBar from "../components/UserActioBar";
 import firebaseApp from "../firebase/credentials";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, onSnapshot } from "firebase/firestore";
 
 function Home({ user }) {
   const db = getFirestore(firebaseApp);
   const collectionRef = collection(db, "incap");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [incap, setIncap] = useState([]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -19,18 +20,22 @@ function Home({ user }) {
   const closeModal = () => {
     setIsModalOpen(false);
   }
-  const getIncap = async () => {
-    try {
-      const querySnapshot = await getDocs(collectionRef);
-      querySnapshot.forEach(doc => {
-        console.log(doc.id, " => ", doc.data());
+  const getIncap = () => {
+    const unsubscribe = onSnapshot(collectionRef, (querySnapshot) => {
+      const docs = []
+      querySnapshot.forEach((doc) => {
+        docs.push({...doc.data(), id:doc.id});
       });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+      setIncap(docs)
+    });
+
+    return unsubscribe;
+  };
   useEffect(() => {
-    getIncap();
+    const unsubscribe = getIncap();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
@@ -40,7 +45,7 @@ function Home({ user }) {
         <Modal onClose={() => closeModal()} userData={user} /> : null
       }
       <Filter />
-      <TableInfo />
+      <TableInfo cardInfo={incap}/>
     </div>
   );
 }
