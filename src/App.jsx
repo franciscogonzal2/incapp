@@ -16,19 +16,19 @@ function App() {
     const usersCollectionRef = collection(firestore, "usuarios");
     const docuRef = doc(usersCollectionRef, uid);
     const data = await getDoc(docuRef);
-    const infoFinal = data.data().rol;
+    const infoFinal = data.data();
     return infoFinal;
   }
 
   function setUserWithFirebaseAndRol(usuarioFirebase) {
-    getRol(usuarioFirebase.uid).then((rol) => {
+    getRol(usuarioFirebase.uid).then((data) => {
       const userData = {
         uid: usuarioFirebase.uid,
         email: usuarioFirebase.email,
-        rol: rol,
+        rol: data.rol,
+        name: data.name
       };
       setUser(userData);
-      console.log("userData fianl", userData);
     });
   }
 

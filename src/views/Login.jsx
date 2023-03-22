@@ -7,7 +7,6 @@ import {
 } from "firebase/auth";
 import imagen from '../img/logo.png';
 import { useState } from 'react';
-import { Link } from "react-router-dom";
 
 const auth = getAuth(firebaseApp);
 
@@ -20,7 +19,6 @@ function Login() {
           const email = data.email;
           const password = data.password;
           await signInWithEmailAndPassword(auth, email, password);
-          <Link to = "/home" />
         } catch (error) {
           setSingInError(true)
         }
