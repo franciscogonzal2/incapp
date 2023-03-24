@@ -36,7 +36,7 @@ function Home({ user }) {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [getIncap]);
 
   return (
     <div className="flex flex-col mt-96 ml-10 mr-10 mb-10">
