@@ -25,7 +25,7 @@ function Login() {
       }
       
     return (
-        <div className="flex justify-center items-center h-screen w-screen flex-col border-4">
+        <div className="flex justify-center items-center h-screen w-screen flex-col">
             <div className="flex flex-col items-center h-96 w-96 border-2">
                 <img src={imagen} alt="no file" />
                 <form className="w-full max-w-sm text-center">

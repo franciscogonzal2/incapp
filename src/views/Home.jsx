@@ -20,7 +20,9 @@ function Home({ user }) {
   const closeModal = () => {
     setIsModalOpen(false);
   }
-  const getIncap = () => {
+  
+  useEffect(() => {
+    const getIncap = () => {
     const unsubscribe = onSnapshot(collectionRef, (querySnapshot) => {
       const docs = []
       querySnapshot.forEach((doc) => {
@@ -30,13 +32,12 @@ function Home({ user }) {
     });
 
     return unsubscribe;
-  };
-  useEffect(() => {
+  }
     const unsubscribe = getIncap();
     return () => {
       unsubscribe();
     };
-  }, [getIncap]);
+  }, [collectionRef]);
 
   return (
     <div className="flex flex-col mt-96 ml-10 mr-10 mb-10">
